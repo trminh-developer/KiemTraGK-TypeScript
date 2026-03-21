@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-titles">
+                <h1>Product Management</h1>
+                <p>TypeScript demo (no framework)</p>
+            </div>
+            <button class="btn-primary" id="btn-add-new">Add New</button>
+        </header>
+
+        <!-- Filters -->
+        <div class="filters-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Tìm theo tên sản phẩm...">
+            <select id="category-select" class="category-select">
+                <option value="all">Tất cả danh mục</option>
+                <!-- Categories will be populated here -->
+            </select>
+        </div>
+
+        <!-- Product Grid -->
+        <main class="product-grid" id="product-grid">
+            <!-- Products will be populated here -->
+        </main>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <button class="btn-page" id="btn-prev" disabled>Prev</button>
+            <span class="page-info" id="page-info">1 / 1</span>
+            <button class="btn-page" id="btn-next">Next</button>
+        </div>
+    </div>
+
+    <!-- Modal for Add New Product -->
+    <div class="modal-overlay" id="add-modal" style="display: none;">
+        <div class="modal-content">
+            <button class="btn-close" id="btn-close-modal">&times;</button>
+            <h2>Tạo sản phẩm</h2>
+
+            <form id="add-product-form" class="product-form">
+                <div class="form-group">
+                    <label for="p-name">Tên sản phẩm</label>
+                    <input type="text" id="p-name" class="form-input">
+                    <span class="error-msg" id="err-name">Tên không được để trống</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="p-price">Giá</label>
+                    <input type="number" id="p-price" step="0.01" class="form-input">
+                    <span class="error-msg" id="err-price">Giá phải lớn hơn 0</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="p-category">Category</label>
+                    <input type="text" id="p-category" class="form-input">
+                    <span class="error-msg" id="err-category">Category không được để trống</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="p-image">Image URL</label>
+                    <input type="text" id="p-image" class="form-input">
+                    <span class="error-msg" id="err-image">Image URL không hợp lệ</span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="btn-cancel">Hủy</button>
+                    <button type="submit" class="btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="dist/app.js"></script>
+</body>
+
+</html>
