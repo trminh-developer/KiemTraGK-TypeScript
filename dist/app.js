@@ -3,14 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const models_js_1 = require("./models.js");
 // Initial Mock Data
 let products = [
-    { id: '1', name: 'Essence Mascara Lash Princess', price: 9.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg' },
-    { id: '2', name: 'Eyeshadow Palette with Mirror', price: 19.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/2/thumbnail.jpg' },
-    { id: '3', name: 'Powder Canister', price: 14.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/3/thumbnail.jpg' },
-    { id: '4', name: 'Red Lipstick', price: 12.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/4/thumbnail.jpg' },
-    { id: '5', name: 'Red Nail Polish', price: 8.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/5/thumbnail.jpg' },
-    { id: '6', name: 'Calvin Klein CK One', price: 49.99, category: 'fragrances', image: 'https://cdn.dummyjson.com/product-images/6/thumbnail.jpg' },
-    { id: '7', name: 'Chanel Coco Noir Eau De', price: 129.99, category: 'fragrances', image: 'https://cdn.dummyjson.com/product-images/7/thumbnail.jpg' },
-    { id: '8', name: 'Dior J\'adore', price: 89.99, category: 'fragrances', image: 'https://cdn.dummyjson.com/product-images/8/thumbnail.jpg' }
+    { id: '1', name: 'Essence Mascara Lash Princess', price: 9.99, category: 'beauty', image: '' },
+    { id: '2', name: 'Eyeshadow Palette with Mirror', price: 19.99, category: 'beauty', image: '' },
+    { id: '3', name: 'Powder Canister', price: 14.99, category: 'beauty', image: '' },
+    { id: '4', name: 'Red Lipstick', price: 12.99, category: 'beauty', image: '' },
+    { id: '5', name: 'Red Nail Polish', price: 8.99, category: 'beauty', image: '' },
+    { id: '6', name: 'Calvin Klein CK One', price: 49.99, category: 'fragrances', image: '' },
+    { id: '7', name: 'Chanel Coco Noir Eau De', price: 129.99, category: 'fragrances', image: '' },
+    { id: '8', name: 'Dior J\'adore', price: 89.99, category: 'fragrances', image: '' }
 ];
 let filteredProducts = [...products];
 const ITEMS_PER_PAGE = 4;

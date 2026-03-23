@@ -1,20 +1,27 @@
-import { Product, CATEGORIES } from './models.js';
+import { /* The `Product` class is a model representing a product with properties like id, name, price,
+category, and image. It also has a method `toCardHTML()` that generates HTML markup for
+displaying the product card in the UI. The `Product` class is used to create instances of
+products with specific details and is utilized within the application for managing and
+displaying product information. */
+    Product, ProductManager
+} from './models.ts';
 
-// Initial Mock Data
-let products: Product[] = [
-    { id: '1', name: 'Essence Mascara Lash Princess', price: 9.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/1/thumbnail.jpg' },
-    { id: '2', name: 'Eyeshadow Palette with Mirror', price: 19.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/2/thumbnail.jpg' },
-    { id: '3', name: 'Powder Canister', price: 14.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/3/thumbnail.jpg' },
-    { id: '4', name: 'Red Lipstick', price: 12.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/4/thumbnail.jpg' },
-    { id: '5', name: 'Red Nail Polish', price: 8.99, category: 'beauty', image: 'https://cdn.dummyjson.com/product-images/5/thumbnail.jpg' },
-    { id: '6', name: 'Calvin Klein CK One', price: 49.99, category: 'fragrances', image: 'https://cdn.dummyjson.com/product-images/6/thumbnail.jpg' },
-    { id: '7', name: 'Chanel Coco Noir Eau De', price: 129.99, category: 'fragrances', image: 'https://cdn.dummyjson.com/product-images/7/thumbnail.jpg' },
-    { id: '8', name: 'Dior J\'adore', price: 89.99, category: 'fragrances', image: 'https://cdn.dummyjson.com/product-images/8/thumbnail.jpg' }
+// ================================================
+// Dữ liệu ban đầu — dùng new Product() (OOP)
+// ================================================
+const initialProducts: Product[] = [
+    new Product('1', 'Essence Mascara Lash Princess', 9.99, 'beauty', ''),
+    new Product('2', 'Eyeshadow Palette with Mirror', 19.99, 'beauty', ''),
+    new Product('3', 'Powder Canister', 14.99, 'beauty', ''),
+    new Product('4', 'Red Lipstick', 12.99, 'beauty', ''),
+    new Product('5', 'Red Nail Polish', 8.99, 'beauty', ''),
+    new Product('6', 'Calvin Klein CK One', 49.99, 'fragrances', ''),
+    new Product('7', 'Chanel Coco Noir Eau De', 129.99, 'fragrances', ''),
+    new Product('8', "Dior J'adore", 89.99, 'fragrances', ''),
 ];
 
-let filteredProducts: Product[] = [...products];
-const ITEMS_PER_PAGE = 4;
-let currentPage = 1;
+// Khởi tạo ProductManager
+const manager = new ProductManager(initialProducts);
 
 // DOM Elements
 const grid = document.getElementById('product-grid') as HTMLElement;
@@ -31,143 +38,58 @@ const btnCloseModal = document.getElementById('btn-close-modal') as HTMLButtonEl
 const btnCancel = document.getElementById('btn-cancel') as HTMLButtonElement;
 const addProductForm = document.getElementById('add-product-form') as HTMLFormElement;
 
-// Form Inputs and Error Spans
+// Form Inputs
 const pName = document.getElementById('p-name') as HTMLInputElement;
 const pPrice = document.getElementById('p-price') as HTMLInputElement;
 const pCategory = document.getElementById('p-category') as HTMLInputElement;
 const pImage = document.getElementById('p-image') as HTMLInputElement;
 
-// Initialize App
-function init() {
-    populateCategories();
-    renderPage();
-    setupEventListeners();
-}
-
-function populateCategories() {
-    CATEGORIES.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat;
-        option.textContent = cat;
-        categorySelect.appendChild(option);
-    });
-}
-
-function renderPage() {
+// Render lưới sản phẩm
+function renderPage(): void {
     grid.innerHTML = '';
-    
-    const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
-    if (currentPage > totalPages) currentPage = totalPages;
-    if (currentPage < 1) currentPage = 1;
 
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    const currentProducts = filteredProducts.slice(start, end);
+    const currentProducts = manager.getCurrentPageProducts();
+    const totalPages = manager.getTotalPages();
+    const currentPage = manager.getCurrentPage();
 
-    currentProducts.forEach(p => {
+    currentProducts.forEach((product) => {
         const card = document.createElement('div');
         card.className = 'product-card';
-        card.innerHTML = `
-            <div class="product-image-container">
-                <img src="${p.image}" alt="${p.name}" class="product-image" onerror="this.src='https://via.placeholder.com/200?text=No+Image'">
-            </div>
-            <h3 class="product-name">${p.name}</h3>
-            <span class="product-category-badge">${p.category}</span>
-            <div class="product-price">$${p.price.toFixed(2)}</div>
-        `;
+        card.innerHTML = product.toCardHTML(); // Gọi method của Product class
         grid.appendChild(card);
     });
 
-    // Update Pagination UI
+    // Cập nhật pagination
     pageInfo.textContent = `${currentPage} / ${totalPages}`;
     btnPrev.disabled = currentPage === 1;
     btnNext.disabled = currentPage >= totalPages;
 }
 
-function filterProducts() {
-    const term = searchInput.value.toLowerCase();
-    const cat = categorySelect.value;
-
-    filteredProducts = products.filter(p => {
-        const matchName = p.name.toLowerCase().includes(term);
-        const matchCat = cat === 'all' || p.category === cat;
-        return matchName && matchCat;
+// Điền danh sách category vào <select>
+function populateCategories(): void {
+    manager.getCategories().forEach((cat) => {
+        appendCategoryOption(cat);
     });
+}
 
-    currentPage = 1;
+function appendCategoryOption(cat: string): void {
+    const option = document.createElement('option');
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.appendChild(option);
+}
+
+// Lọc sản phẩm
+function filterProducts(): void {
+    manager.filterProducts(searchInput.value, categorySelect.value);
     renderPage();
 }
 
-function setupEventListeners() {
-    searchInput.addEventListener('input', filterProducts);
-    categorySelect.addEventListener('change', filterProducts);
-
-    btnPrev.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            renderPage();
-        }
-    });
-
-    btnNext.addEventListener('click', () => {
-        const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderPage();
-        }
-    });
-
-    // Modal Events
-    btnAddNew.addEventListener('click', () => {
-        addProductForm.reset();
-        clearErrors();
-        addModal.style.display = 'flex';
-    });
-
-    const closeModal = () => {
-        addModal.style.display = 'none';
-    };
-
-    btnCloseModal.addEventListener('click', closeModal);
-    btnCancel.addEventListener('click', closeModal);
-    
-    // Close when clicking outside
-    addModal.addEventListener('click', (e) => {
-        if (e.target === addModal) closeModal();
-    });
-
-    // Form Submission
-    addProductForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        if (validateForm()) {
-            const newProduct: Product = {
-                id: Date.now().toString(),
-                name: pName.value.trim(),
-                price: parseFloat(pPrice.value),
-                category: pCategory.value.trim(),
-                image: pImage.value.trim()
-            };
-
-            products.unshift(newProduct);
-            
-            // Re-populate categories if new one added
-            if (!CATEGORIES.includes(newProduct.category)) {
-                CATEGORIES.push(newProduct.category);
-                const option = document.createElement('option');
-                option.value = newProduct.category;
-                option.textContent = newProduct.category;
-                categorySelect.appendChild(option);
-            }
-
-            filterProducts(); // Re-render with new data
-            closeModal();
-        }
-    });
-}
-
-function clearErrors() {
-    document.querySelectorAll('.form-group').forEach(group => group.classList.remove('has-error'));
+// Validate form
+function clearErrors(): void {
+    document.querySelectorAll('.form-group').forEach((group) =>
+        group.classList.remove('has-error')
+    );
 }
 
 function validateForm(): boolean {
@@ -199,5 +121,78 @@ function validateForm(): boolean {
     return isValid;
 }
 
-// Start
+// Đóng modal
+function closeModal(): void {
+    addModal.style.display = 'none';
+}
+
+// Gắn Event Listeners
+function setupEventListeners(): void {
+    // Filter
+    searchInput.addEventListener('input', filterProducts);
+    categorySelect.addEventListener('change', filterProducts);
+
+    // Phân trang
+    btnPrev.addEventListener('click', () => {
+        manager.prevPage();
+        renderPage();
+    });
+
+    btnNext.addEventListener('click', () => {
+        manager.nextPage();
+        renderPage();
+    });
+
+    // Mở modal
+    btnAddNew.addEventListener('click', () => {
+        addProductForm.reset();
+        clearErrors();
+        addModal.style.display = 'flex';
+    });
+
+    // Đóng modal
+    btnCloseModal.addEventListener('click', closeModal);
+    btnCancel.addEventListener('click', closeModal);
+
+    // Click bên ngoài modal để đóng
+    addModal.addEventListener('click', (e) => {
+        if (e.target === addModal) closeModal();
+    });
+
+    // Submit form — tạo Product mới bằng constructor
+    addProductForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+            const categoriesBefore = manager.getCategories().length;
+
+            // Tạo sản phẩm mới dùng Product class constructor
+            const newProduct = new Product(
+                Date.now().toString(),
+                pName.value.trim(),
+                parseFloat(pPrice.value),
+                pCategory.value.trim(),
+                pImage.value.trim()
+            );
+
+            manager.addProduct(newProduct); // Gọi method của ProductManager
+
+            // Nếu có category mới thì thêm vào <select>
+            if (manager.getCategories().length > categoriesBefore) {
+                appendCategoryOption(newProduct.category);
+            }
+
+            filterProducts(); // Re-render với dữ liệu mới
+            closeModal();
+        }
+    });
+}
+
+// Khởi chạy ứng dụng
+function init(): void {
+    populateCategories();
+    renderPage();
+    setupEventListeners();
+}
+
 init();
