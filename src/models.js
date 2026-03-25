@@ -2,33 +2,19 @@
 // Product Class
 // ================================================
 export class Product {
-    id: string;
-    name: string;
-    price: number;
-    category: string;
-    image: string;
-
-    constructor(
-        id: string,
-        name: string,
-        price: number,
-        category: string,
-        image: string
-    ) {
+    constructor(id, name, price, category, image) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.category = category;
         this.image = image;
     }
-
     // Trả về chuỗi giá đã format, ví dụ: "$9.99"
-    getFormattedPrice(): string {
+    getFormattedPrice() {
         return `$${this.price.toFixed(2)}`;
     }
-
     // Trả về HTML card để render lên giao diện
-    toCardHTML(): string {
+    toCardHTML() {
         return `
             <div class="product-card">
                 <div class="product-image-container">
@@ -46,37 +32,27 @@ export class Product {
         `;
     }
 }
-
 // ================================================
 // ProductManager Class
 // ================================================
 export class ProductManager {
-    private products: Product[];
-    private filteredProducts: Product[];
-    private currentPage: number;
-    private readonly itemsPerPage: number;
-    private categories: string[];
-
-    constructor(initialProducts: Product[]) {
+    constructor(initialProducts) {
         this.products = [...initialProducts];
         this.filteredProducts = [...initialProducts];
         this.currentPage = 1;
         this.itemsPerPage = 4; // Cập nhật lại thành 4 để thanh Pagination có đất diễn
         this.categories = [...new Set(initialProducts.map((p) => p.category))];
     }
-
     // Thêm sản phẩm mới vào đầu danh sách gốc
-    addProduct(product: Product): void {
+    addProduct(product) {
         this.products.unshift(product);
         // KHÔNG unshift trực tiếp vào filteredProducts ở đây nữa để tránh phá vỡ bộ lọc hiện tại
-
         if (!this.categories.includes(product.category)) {
             this.categories.push(product.category);
         }
     }
-
     // Lọc sản phẩm theo tên và category, reset về trang 1
-    filterProducts(searchTerm: string, category: string): void {
+    filterProducts(searchTerm, category) {
         const term = searchTerm.toLowerCase();
         this.filteredProducts = this.products.filter((p) => {
             const matchName = p.name.toLowerCase().includes(term);
@@ -85,34 +61,28 @@ export class ProductManager {
         });
         this.currentPage = 1; // Reset về trang 1 mỗi khi lọc dữ liệu
     }
-
     // Lấy danh sách sản phẩm của trang hiện tại
-    getCurrentPageProducts(): Product[] {
+    getCurrentPageProducts() {
         const start = (this.currentPage - 1) * this.itemsPerPage;
         const end = start + this.itemsPerPage;
         return this.filteredProducts.slice(start, end);
     }
-
     // Tính tổng số trang
-    getTotalPages(): number {
+    getTotalPages() {
         return Math.ceil(this.filteredProducts.length / this.itemsPerPage) || 1;
     }
-
-    getCurrentPage(): number {
+    getCurrentPage() {
         return this.currentPage;
     }
-
-    getCategories(): string[] {
+    getCategories() {
         return this.categories;
     }
-
-    nextPage(): void {
+    nextPage() {
         if (this.currentPage < this.getTotalPages()) {
             this.currentPage++;
         }
     }
-
-    prevPage(): void {
+    prevPage() {
         if (this.currentPage > 1) {
             this.currentPage--;
         }
