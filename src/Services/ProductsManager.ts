@@ -1,5 +1,5 @@
 // src/services/ProductManager.ts
-import { Product } from '../Models/Product.js'; // Phải có đuôi .js
+import { Product } from '../Models/Products.js'; // Phải có đuôi .js
 
 export class ProductManager {
     private products: Product[];

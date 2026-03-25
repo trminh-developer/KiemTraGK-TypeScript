@@ -1,6 +1,6 @@
 // src/app.ts
-import { Product } from './Models/Product.js';
-import { ProductManager } from './Services/ProductManager.js';
+import { Product } from './Models/Products.js';
+import { ProductManager } from './Services/ProductsManager.js';
 
 // Khởi tạo dữ liệu
 function loadProducts(): Product[] {
