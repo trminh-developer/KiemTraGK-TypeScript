@@ -68,18 +68,7 @@ function loadFromStorage() {
     return [];
 }
 
-const DEMO = [
-    // new Product('1', 'Giày Nike Air Max', '129.99', 'Giày', 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80'),
-    // new Product('2', 'Áo Polo Ralph Lauren', '89.99', 'Thời trang', 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400&q=80'),
-    // new Product('3', 'iPhone 15 Pro', '999.00', 'Điện tử', 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&q=80'),
-    // new Product('4', 'Túi xách Gucci', '450.00', 'Túi xách', 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80'),
-    // new Product('5', 'MacBook Air M3', '1299.00', 'Điện tử', 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=80'),
-    // new Product('6', 'Đồng hồ Casio', '75.00', 'Phụ kiện', 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400&q=80'),
-    // new Product('7', 'Tai nghe Sony WH-1000XM5', '349.99', 'Điện tử', 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80'),
-    // new Product('8', 'Balo Herschel', '65.00', 'Túi xách', 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80'),
-    // new Product('9', 'Kem chống nắng SPF 50', '25.00', 'Làm đẹp', 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&q=80'),
-    // new Product('10', 'Máy ảnh Sony Alpha', '1499.00', 'Điện tử', 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80'),
-];
+const DEMO = [];
 
 const stored = loadFromStorage();
 const manager = new ProductManager(stored.length ? stored : DEMO);
