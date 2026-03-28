@@ -1,4 +1,5 @@
-class Product {
+// ✅ Fix 1: Bỏ "export" — không dùng CommonJS, Vite xử lý bundling
+export class Product {
     id: string;
     name: string;
     price: number;
@@ -153,6 +154,7 @@ function populateCat(): void {
     catSel.value = manager.categories.includes(cur) ? cur : 'all';
 }
 
+// ✅ Fix 3: Bổ sung form helpers bị thiếu
 function clearErr(): void {
     [eN, eP, eC, eI].forEach(e => e.style.display = 'none');
     [iName, iPrice, iCat, iImg].forEach(i => i.classList.remove('error'));
@@ -230,5 +232,5 @@ catSel.addEventListener('change', () => { manager.filter(search.value, catSel.va
 bPrev.addEventListener('click', () => { manager.prev(); render(); });
 bNext.addEventListener('click', () => { manager.next(); render(); });
 
-// Boot 
+// ─── Boot ────────────────────────────────────────────────────
 manager.filter('', 'all', true); populateCat(); render();

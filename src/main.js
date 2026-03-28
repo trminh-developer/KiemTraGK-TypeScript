@@ -7,7 +7,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-// ✅ Fix 1: Bỏ "export" — không dùng CommonJS, Vite xử lý bundling
+
 var Product = /** @class */ (function () {
     function Product(id, name, price, category, image) {
         this.id = id;
@@ -80,10 +80,14 @@ var ProductManager = /** @class */ (function () {
         return this.filteredProducts.slice(s, s + this.itemsPerPage);
     };
     ProductManager.prototype.totalPages = function () { return Math.ceil(this.filteredProducts.length / this.itemsPerPage) || 1; };
-    ProductManager.prototype.next = function () { if (this.currentPage < this.totalPages())
-        this.currentPage++; };
-    ProductManager.prototype.prev = function () { if (this.currentPage > 1)
-        this.currentPage--; };
+    ProductManager.prototype.next = function () {
+        if (this.currentPage < this.totalPages())
+            this.currentPage++;
+    };
+    ProductManager.prototype.prev = function () {
+        if (this.currentPage > 1)
+            this.currentPage--;
+    };
     return ProductManager;
 }());
 // ─── Storage ────────────────────────────────────────────────
@@ -209,8 +213,10 @@ document.getElementById('btn-add-new').addEventListener('click', openAdd);
 document.getElementById('btn-close-modal').addEventListener('click', closeAdd);
 document.getElementById('btn-cancel').addEventListener('click', closeAdd);
 document.getElementById('btn-save').addEventListener('click', handleSave);
-addModal.addEventListener('click', function (e) { if (e.target === addModal)
-    closeAdd(); });
+addModal.addEventListener('click', function (e) {
+    if (e.target === addModal)
+        closeAdd();
+});
 grid.addEventListener('click', function (e) {
     var t = e.target;
     if (t.classList.contains('btn-delete')) {
